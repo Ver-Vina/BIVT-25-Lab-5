@@ -338,6 +338,99 @@ namespace Lab5
 
             // code here
 
+            int n = matrix.GetLength(0);
+            int m = matrix.GetLength(1);
+            if (n == m)
+            {
+
+                int mx = -10000000;
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        if (Math.Abs(matrix[i, j]) > mx)
+                        {
+                            mx = Math.Abs(matrix[i, j]);
+                        }
+                    }
+                }
+                int ti = -1;
+                int tj = -1;
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        if (Math.Abs(matrix[i, j]) == mx)
+                        {
+                            ti = i;
+                            tj = j;
+                            break;
+                        }
+                    }
+                    if (ti != -1) break;
+                }
+                if (ti != k)
+                {
+
+                    if (ti < k)
+                    {
+                        for (int i = ti; i < k; i++)
+                        {
+                            for (int j = 0; j < m; j++)
+                            {
+                                (matrix[i, j], matrix[i + 1, j]) = (matrix[i + 1, j], matrix[i, j]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = ti; i > k; i--)
+                        {
+                            for (int j = 0; j < m; j++)
+                            {
+                                (matrix[i, j], matrix[i - 1, j]) = (matrix[i - 1, j], matrix[i, j]);
+                            }
+                        }
+
+                    }
+                }
+                if (tj != k)
+                {
+                    if (tj < k)
+                    {
+
+                        for (int j = tj; j < k; j++)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                (matrix[i, j], matrix[i, j + 1]) = (matrix[i, j + 1], matrix[i, j]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int j = tj; j > k; j--)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                (matrix[i, j], matrix[i, j - 1]) = (matrix[i, j - 1], matrix[i, j]);
+                            }
+                        }
+                    }
+                }
+            }
+            // end
+
+        }
+        public int[,] Task10(int[,] A, int[,] B)
+        {
+            int[,] answer = null;
+
+            // code here
+
+            if (A == null || B == null) 
+                return null;
+            
             int n1 = A.GetLength(0);
             int m1 = A.GetLength(1);
             int n2 = B.GetLength(0);
@@ -357,97 +450,6 @@ namespace Lab5
                     }
                 }
             }
-
-            // end
-
-        }
-        public int[,] Task10(int[,] A, int[,] B)
-        {
-            int[,] answer = null;
-
-            // code here
-
-            if (k >= matrix.GetLength(0) || matrix.GetLength(0) != matrix.GetLength(1) || k < 0)
-            {
-                return null;
-            }
-
-            int maximum = int.MinValue;
-            int max_row = 0;
-            int max_col = 0;
-
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(0); j++)
-                {
-                    if (Math.Abs(matrix[i, j]) > maximum)
-                    {
-                        maximum = Math.Abs(matrix[i, j]);
-                        max_row = i;
-                        max_col = j;
-                    }
-                }
-            }
-
-            int[] row = new int[matrix.GetLength(0)];
-            int[] col = new int[matrix.GetLength(0)];
-
-            for (int j = 0; j < matrix.GetLength(0); j++)
-            {
-                row[j] = matrix[max_row, j];
-            }
-
-            for (int i = max_row; i > k; i--)
-            {
-                for (int j = 0; j < matrix.GetLength(0); j++)
-                {
-                    matrix[i, j] = matrix[i - 1, j];
-                }
-            }
-
-            for (int i = max_row; i < k; i++)
-            {
-                for (int j = 0; j < matrix.GetLength(0); j++)
-                {
-                    matrix[i, j] = matrix[i + 1, j];
-                }
-            }
-
-            for (int j = 0; j < matrix.GetLength(0); j++)
-            {
-                matrix[k, j] = row[j];
-            }
-
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                col[i] = matrix[i, max_col];
-            }
-
-            for (int j = max_col; j > k; j--)
-            {
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    matrix[i, j] = matrix[i, j - 1];
-                }
-            }
-
-            for (int j = max_col; j < k; j++)
-            {
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    matrix[i, j] = matrix[i, j + 1];
-                }
-            }
-
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                matrix[i, k] = col[i];
-            }
-
-
-            return result;
-        }
-
             // end
 
             return answer;
@@ -458,40 +460,29 @@ namespace Lab5
 
             // code here
 
-            if (matrix == null) return null;
-
-            int rows = matrix.GetLength(0);
-            int cols = matrix.GetLength(1);
-            
-            List<int[]> resultList = new List<int[]>();
-
-            for (int i = 0; i < rows; i++)
+            int n = matrix.GetLength(0);
+            int m = matrix.GetLength(1);
+            answer = new int[n][];
+            for (int i = 0; i < n; i++)
             {
-                int positiveCount = 0;
-                for (int j = 0; j < cols; j++)
+                int count = 0;
+                for (int j = 0; j < m; j++)
+                {
+                    if (matrix[i, j] <= 0)
+                    {
+                        count++;
+                    }
+                }
+                answer[i] = new int[m - count];
+                int l = 0;
+                for (int j = 0; j < m; j++)
                 {
                     if (matrix[i, j] > 0)
                     {
-                        positiveCount++;
+                        answer[i][l++] = matrix[i, j];
                     }
                 }
-
-                int[] positiveElements = new int[positiveCount];
-                int index = 0;
-
-                for (int j = 0; j < cols; j++)
-                {
-                    if (matrix[i, j] > 0)
-                    {
-                        positiveElements[index++] = matrix[i, j];
-                    }
-                }
-
-                resultList.Add(positiveElements);
             }
-
-            return resultList.ToArray();
-
             // end
 
             return answer;
@@ -502,47 +493,29 @@ namespace Lab5
 
             // code here
 
-            
-            if (array == null) return null;
-
-            int totalElements = 0;
+            int count = 0;
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i] != null)
+                count += array[i].Length;
+            }
+            int[] vr = new int[count];
+            int u = 0;
+            foreach (int[] to in array)
+            {
+                foreach (int t in to)
                 {
-                    totalElements += array[i].Length;
+                    vr[u++] = t;
                 }
             }
-
-            if (totalElements == 0) return new int[0, 0];
-
-            int n = (int)Math.Ceiling(Math.Sqrt(totalElements));
-
-            int[,] matrix = new int[n, n];
-
-            int currentRow = 0;
-            int currentCol = 0;
-            int elementIndex = 0;
-
-            for (int i = 0; i < array.Length; i++)
+            int n = (int)Math.Ceiling(Math.Sqrt(count));
+            answer = new int[n, n];
+            int l = 0;
+            for (int i = 0; i < n && l < count; i++)
             {
-                if (array[i] != null)
+                for (int j = 0; j < n && l < count; j++)
                 {
-                    for (int j = 0; j < array[i].Length; j++)
-                    {
-                        if (currentRow < n && currentCol < n)
-                        {
-                            matrix[currentRow, currentCol] = array[i][j];
-                            elementIndex++;
-
-                            currentCol++;
-                            if (currentCol >= n)
-                            {
-                                currentCol = 0;
-                                currentRow++;
-                            }
-                        }
-                    }
+                    answer[i, j] = vr[l];
+                    l++;
                 }
             }
 
@@ -553,3 +526,4 @@ namespace Lab5
     }
 
 }
+
